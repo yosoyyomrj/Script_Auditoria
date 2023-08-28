@@ -1,49 +1,102 @@
 create DATABASE Aeropuerto;
 use Aeropuerto;
 
-
-create table TIQUETE (
-valor integer not null,
-origen varchar (50) not null,
-destino varchar (50) not null,
-check_in varchar (50) not null,
-Fecha_Abordaje date not null,
-numero integer not null,
- vuelo_numero integer not null,
- pasajero_cedula integer not null,
- silla_idSilla integer not null,
- silla_Avion_idAvion integer not null,
- 
-constraint TIQUETE_pk primary key (numero)
+   -- drop DATABASE Aeropuerto;
+CREATE TABLE PASAJERO (
+    cedula INTEGER NOT NULL PRIMARY KEY,
+    nombre_pasajero VARCHAR(50) NOT NULL,
+    Apellido_pasajero VARCHAR(50) NOT NULL,
+    equipaje VARCHAR(50) NOT NULL
+    
 );
 
-CREATE TABLE  PASAJERO(
-nombre_pasajero varchar (50) not null,
-Apellido_pasajero varchar (50) not null,
-equipaje varchar (50) not null,
-cedula integer not null,
 
-CONSTRAINT PASAJERO PRIMARY KEY (cedula)
+CREATE TABLE AVION (
+    id_avion INTEGER NOT NULL PRIMARY KEY,
+    estado VARCHAR(50) NOT NULL,
+    suministros VARCHAR(2) NOT NULL,
+    tipo_avion VARCHAR(50) NOT NULL,
+    modelo VARCHAR(50) NOT NULL,
+    nro_silla_ejecutiva INTEGER NOT NULL,
+    nro_silla_alta INTEGER NOT NULL,
+    tiquete_vuelo integer not null,
+    personal_idPersonal integer not null
+
 );
 
-create table AVION (
-estado VARCHAR (50) not null,
-suministros varchar (2) not null,
-tipo_avion VARCHAR (50) not null,
-id_avion integer not null,
-modelo VARCHAR (50) not null,
-nro_silla_ejecutiva integer not null,
-nro_silla_alta integer not null,
 
-CONSTRAINT AVION PRIMARY KEY(id_avion)
+CREATE TABLE TIQUETE (
+    numero_tiquete INTEGER NOT NULL PRIMARY KEY,
+    valor INTEGER NOT NULL,
+    origen VARCHAR(50) NOT NULL,
+    destino VARCHAR(50) NOT NULL,
+    check_in VARCHAR(50) NOT NULL,
+    Fecha_Abordaje DATE NOT NULL,
+    vuelo_numero INTEGER NOT NULL,
+    pasajero_cedula INTEGER NOT NULL,
+    silla_idSilla INTEGER NOT NULL,
+    silla_Avion_idAvion INTEGER NOT NULL
+
 );
 
-CREATE table SILLA (
+CREATE TABLE SILLA (
+    id_silla INTEGER NOT NULL PRIMARY KEY,
+    UBICACION_idUBICACION VARCHAR(50) NOT NULL,
+    AVION_idAVION INTEGER NOT NULL,
+    ubicacion_id_ubicacion integer not null,
+    CLASE_idCLASE integer not null
+    
 
-id_silla integer not null,
-UBICACION_idUBICACION VARCHAR (50) not null,
-CLASE_idCLASE VARCHAR (50) not null,
-AVION_idAVION VARCHAR (50) not null,
-
-CONSTRAINT SILLA PRIMARY KEY (id_silla)
+	
 );
+
+CREATE TABLE VUELO (
+    numero_vuelo INTEGER NOT NULL PRIMARY KEY,
+    fecha_salida DATETIME NOT NULL,
+    fecha_llegada DATETIME NOT NULL,
+    origen_aeropuerto_id INTEGER NOT NULL,
+    destino_aeropuerto_id INTEGER NOT NULL,
+    personal_idPersonal integer not null
+    
+);
+
+CREATE TABLE AEROPUERTO (
+    id_aeropuerto INTEGER NOT NULL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    ubicacion VARCHAR(100) NOT NULL
+    
+    
+);
+
+
+CREATE TABLE PERSONAL (
+    idPersonal INTEGER NOT NULL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    cargo VARCHAR(50) NOT NULL
+    
+);
+
+
+CREATE TABLE CLASE (
+    id_clase INTEGER NOT NULL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(100) NOT NULL
+    
+);
+
+CREATE TABLE UBICACION (
+    id_ubicacion INTEGER NOT NULL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(100) NOT NULL
+    
+);
+
+alter table TIQUETE add CONSTRAINT TIQUETE_PASAJERO FOREIGN KEY (pasajero_cedula) references PASAJERO (cedula);
+alter table  AVION add CONSTRAINT TIQUETE_AVION FOREIGN KEY (tiquete_vuelo) references TIQUETE (numero_tiquete);
+alter table  SILLA add CONSTRAINT SILLA_AVION FOREIGN KEY (AVION_idAVION) references AVION (id_avion );
+alter table SILLA add CONSTRAINT SILLA_CLASE FOREIGN KEY(CLASE_idCLASE) REFERENCES CLASE(id_clase);
+alter table SILLA add CONSTRAINT SILLA_UBICACION FOREIGN KEY(ubicacion_id_ubicacion ) REFERENCES UBICACION(id_ubicacion );
+alter table AVION add CONSTRAINT AVION_PERSONAL FOREIGN KEY(personal_idPersonal) REFERENCES PERSONAL(idPersonal);
+
+
