@@ -1,7 +1,7 @@
 create DATABASE Aeropuerto;
 use Aeropuerto;
 
-   -- drop DATABASE Aeropuerto;
+    -- drop DATABASE Aeropuerto;
 CREATE TABLE PASAJERO (
     cedula INTEGER NOT NULL PRIMARY KEY,
     nombre_pasajero VARCHAR(50) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE TIQUETE (
     destino VARCHAR(50) NOT NULL,
     check_in VARCHAR(50) NOT NULL,
     Fecha_Abordaje DATE NOT NULL,
-    vuelo_numero INTEGER NOT NULL,
+    numero_numeroVuelo INTEGER NOT NULL,
     pasajero_cedula INTEGER NOT NULL,
     silla_idSilla INTEGER NOT NULL,
     silla_Avion_idAvion INTEGER NOT NULL
@@ -51,7 +51,7 @@ CREATE TABLE SILLA (
 );
 
 CREATE TABLE VUELO (
-    numero_vuelo INTEGER NOT NULL PRIMARY KEY,
+    numeroVuelo INTEGER NOT NULL PRIMARY KEY,
     fecha_salida DATETIME NOT NULL,
     fecha_llegada DATETIME NOT NULL,
     origen_aeropuerto_id INTEGER NOT NULL,
@@ -98,5 +98,6 @@ alter table  SILLA add CONSTRAINT SILLA_AVION FOREIGN KEY (AVION_idAVION) refere
 alter table SILLA add CONSTRAINT SILLA_CLASE FOREIGN KEY(CLASE_idCLASE) REFERENCES CLASE(id_clase);
 alter table SILLA add CONSTRAINT SILLA_UBICACION FOREIGN KEY(ubicacion_id_ubicacion ) REFERENCES UBICACION(id_ubicacion );
 alter table AVION add CONSTRAINT AVION_PERSONAL FOREIGN KEY(personal_idPersonal) REFERENCES PERSONAL(idPersonal);
-
-
+alter table TIQUETE add CONSTRAINT TIQUETE_VUELO FOREIGN KEY(numero_numeroVuelo) REFERENCES VUELO(numeroVuelo);
+alter table VUELO add CONSTRAINT VUELO_ORIGEN FOREIGN KEY(origen_aeropuerto_id) REFERENCES aeropuerto(id_aeropuerto);
+alter table VUELO add CONSTRAINT VUELO_DESTINO FOREIGN KEY(destino_aeropuerto_id) REFERENCES aeropuerto(id_aeropuerto);
