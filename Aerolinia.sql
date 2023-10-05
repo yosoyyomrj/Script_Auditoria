@@ -1,7 +1,7 @@
 create DATABASE Aeropuerto;
 use Aeropuerto;
+ -- drop DATABASE Aeropuerto;
 
-    -- drop DATABASE Aeropuerto;
 CREATE TABLE PASAJERO (
     cedula INTEGER NOT NULL PRIMARY KEY,
     nombre_pasajero VARCHAR(50) NOT NULL,
@@ -13,8 +13,8 @@ CREATE TABLE PASAJERO (
 
 CREATE TABLE AVION (
     id_avion INTEGER NOT NULL PRIMARY KEY,
-    estado VARCHAR(50) NOT NULL,
-    suministros VARCHAR(2) NOT NULL,
+    id_revisionAvion integer not null,
+    suministros VARCHAR(50) NOT NULL,
     tipo_avion VARCHAR(50) NOT NULL,
     modelo VARCHAR(50) NOT NULL,
     nro_silla_ejecutiva INTEGER NOT NULL,
@@ -23,6 +23,14 @@ CREATE TABLE AVION (
     personal_idPersonal integer not null
 
 );
+
+Create table ESTADO (
+	id_revision integer not null primary key,
+    fecha_Revision date not null,
+    nivelCombustible integer not null,
+    estodoMotor VARCHAR(50) not null
+    
+    );
 
 
 CREATE TABLE TIQUETE (
@@ -54,20 +62,9 @@ CREATE TABLE VUELO (
     numeroVuelo INTEGER NOT NULL PRIMARY KEY,
     fecha_salida DATETIME NOT NULL,
     fecha_llegada DATETIME NOT NULL,
-    origen_aeropuerto_id INTEGER NOT NULL,
-    destino_aeropuerto_id INTEGER NOT NULL,
     personal_idPersonal integer not null
     
 );
-
-CREATE TABLE AEROPUERTO (
-    id_aeropuerto INTEGER NOT NULL PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL,
-    ubicacion VARCHAR(100) NOT NULL
-    
-    
-);
-
 
 CREATE TABLE PERSONAL (
     idPersonal INTEGER NOT NULL PRIMARY KEY,
@@ -99,5 +96,4 @@ alter table SILLA add CONSTRAINT SILLA_CLASE FOREIGN KEY(CLASE_idCLASE) REFERENC
 alter table SILLA add CONSTRAINT SILLA_UBICACION FOREIGN KEY(ubicacion_id_ubicacion ) REFERENCES UBICACION(id_ubicacion );
 alter table AVION add CONSTRAINT AVION_PERSONAL FOREIGN KEY(personal_idPersonal) REFERENCES PERSONAL(idPersonal);
 alter table TIQUETE add CONSTRAINT TIQUETE_VUELO FOREIGN KEY(numero_numeroVuelo) REFERENCES VUELO(numeroVuelo);
-alter table VUELO add CONSTRAINT VUELO_ORIGEN FOREIGN KEY(origen_aeropuerto_id) REFERENCES aeropuerto(id_aeropuerto);
-alter table VUELO add CONSTRAINT VUELO_DESTINO FOREIGN KEY(destino_aeropuerto_id) REFERENCES aeropuerto(id_aeropuerto);
+alter table AVION add CONSTRAINT AVION_ESTADO FOREIGN KEY(id_revisionAvion) REFERENCES ESTADO(id_revision);
